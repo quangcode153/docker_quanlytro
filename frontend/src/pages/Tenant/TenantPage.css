@@ -1,0 +1,234 @@
+/* ===========================================
+   TenantPage.css — Styles riêng cho trang Khách Thuê
+   BEM: .tenant-nav, .tenant-contract, .tenant-invoice, ...
+   =========================================== */
+
+/* --- Thanh điều hướng Tab --- */
+.tenant-nav {
+  display: flex;
+  gap: 4px;
+  background: var(--border-light);
+  padding: 4px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  width: fit-content;
+}
+
+.tenant-nav__item {
+  padding: 8px 18px;
+  border-radius: var(--radius-sm);
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all var(--transition);
+  background: transparent;
+  color: var(--text-muted);
+}
+
+.tenant-nav__item--active {
+  background: var(--surface);
+  color: var(--text-primary);
+  box-shadow: var(--shadow-xs);
+}
+
+/* --- Header row --- */
+.tenant-header-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+  gap: 12px;
+}
+
+/* --- Thông tin hợp đồng --- */
+.tenant-contract-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.tenant-contract-card {
+  background: var(--bg);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  border: 1px solid var(--border-light);
+}
+
+.tenant-contract-card__label {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.tenant-contract-card__value {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+/* --- Hóa đơn --- */
+.tenant-invoice {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  transition: all var(--transition);
+}
+
+.tenant-invoice--paid {
+  border-color: #D1FAE5;
+  opacity: 0.75;
+}
+
+.tenant-invoice__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.tenant-invoice__header--paid {
+  background: #F0FDF4;
+}
+
+.tenant-invoice__header--unpaid {
+  background: var(--bg);
+}
+
+.tenant-invoice__period-label {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  margin-bottom: 2px;
+}
+
+.tenant-invoice__period-value {
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--text-primary);
+}
+
+.tenant-invoice__body {
+  padding: 16px 20px;
+}
+
+.tenant-invoice__fee-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.tenant-invoice__fee-row:last-of-type {
+  border-bottom: none;
+}
+
+.tenant-invoice__fee-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  margin-right: 10px;
+}
+
+.tenant-invoice__total {
+  margin-top: 12px;
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+  background: var(--text-primary);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tenant-invoice__total-label {
+  font-weight: 500;
+  color: #A1A1AA;
+  font-size: 12px;
+}
+
+.tenant-invoice__total-value {
+  font-weight: 700;
+  color: #FDE68A;
+  font-size: 16px;
+}
+
+/* --- Thông báo từ chủ trọ --- */
+.tenant-notice {
+  padding: 16px;
+  background: var(--bg);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-light);
+  border-left: 3px solid var(--accent);
+}
+
+.tenant-notice__title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+}
+
+.tenant-notice__content {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  white-space: pre-line;
+}
+
+.tenant-notice__date {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 10px;
+}
+
+/* --- Modal Thanh toán --- */
+.tenant-modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.tenant-modal {
+  background: var(--surface);
+  border-radius: var(--radius-xl);
+  width: 100%;
+  max-width: 400px;
+  padding: 32px;
+  text-align: center;
+  position: relative;
+  animation: scaleIn 0.25s ease;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .tenant-contract-grid {
+    grid-template-columns: 1fr;
+  }
+  .tenant-nav {
+    width: 100%;
+  }
+  .tenant-nav__item {
+    flex: 1;
+    text-align: center;
+  }
+  .tenant-header-row {
+    flex-direction: column;
+  }
+}

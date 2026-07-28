@@ -1,0 +1,17 @@
+export const ROLES = {
+  ADMIN: 'ROLE_ADMIN',
+  LANDLORD: 'ROLE_LANDLORD',
+  USER: 'ROLE_USER'
+};
+
+export const ROOM_STATUS = {
+  EMPTY: 'TRONG', 
+  RENTED: 'DA_THUE',
+  MAINTENANCE: 'BAO_TRI'
+};
+
+export const CONTRACT_STATUS = {
+  PENDING: 'CHO_DUYET',
+  APPROVED: 'DA_DUYET',
+  REJECTED: 'TU_CHOI'
+};

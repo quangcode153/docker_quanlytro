@@ -1,0 +1,71 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  backend-ci:
+    name: Backend CI (Spring Boot)
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Set up JDK 21
+      uses: actions/setup-java@v4
+      with:
+        java-version: '21'
+        distribution: 'temurin'
+        cache: maven
+
+    - name: Run Backend Tests
+      run: |
+        cd backend
+        chmod +x mvnw
+        ./mvnw clean test
+
+  frontend-ci:
+    name: Frontend CI (Vite + React)
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+        cache-dependency-path: frontend/package-lock.json
+
+    - name: Install Dependencies & Build Frontend
+      run: |
+        cd frontend
+        npm ci
+        npm run build
+
+  docker-build:
+    name: Docker Configuration Verify
+    runs-on: ubuntu-latest
+    needs: [backend-ci, frontend-ci]
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Validate Docker Compose Config
+      run: |
+        docker compose config
+
+    - name: Build Backend Docker Image
+      run: |
+        docker build -t test-backend ./backend
+
+    - name: Build Frontend Docker Image
+      run: |
+        docker build -t test-frontend ./frontend

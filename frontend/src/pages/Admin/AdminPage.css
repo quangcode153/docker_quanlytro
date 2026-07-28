@@ -1,0 +1,187 @@
+/* ===========================================
+   AdminPage.css — Styles riêng cho trang Quản Trị Viên
+   BEM: .admin-nav, .admin-user-card, .admin-complaint, ...
+   =========================================== */
+
+/* --- Thanh điều hướng Tab --- */
+.admin-nav {
+  display: flex;
+  gap: 4px;
+  background: var(--border-light);
+  padding: 4px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  margin-bottom: 24px;
+  width: fit-content;
+}
+
+.admin-nav__item {
+  padding: 9px 20px;
+  border-radius: var(--radius-sm);
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all var(--transition);
+  background: transparent;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+}
+
+.admin-nav__item--active {
+  background: var(--text-primary);
+  color: #fff;
+}
+
+.admin-nav__item:hover:not(.admin-nav__item--active) {
+  background: var(--border-light);
+  color: var(--text-primary);
+}
+
+.admin-nav__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--danger);
+  color: #fff;
+  font-size: 10px;
+  margin-left: 6px;
+  font-weight: 700;
+}
+
+/* --- Card chủ trọ trong danh sách --- */
+.admin-host-card {
+  padding: 20px;
+  background: var(--bg);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  text-align: center;
+  transition: all var(--transition);
+  cursor: pointer;
+}
+
+.admin-host-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px var(--accent-glow);
+}
+
+.admin-host-card--locked {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.admin-host-card__avatar {
+  margin: 0 auto 10px;
+  width: 44px;
+  height: 44px;
+  font-size: 15px;
+}
+
+.admin-host-card__name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.admin-host-card__locked-label {
+  font-size: 11px;
+  color: var(--danger);
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+.admin-host-card__id {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 3px;
+}
+
+/* --- Danh sách khiếu nại --- */
+.admin-complaint {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  transition: opacity var(--transition);
+}
+
+.admin-complaint--resolved {
+  opacity: 0.6;
+}
+
+.admin-complaint__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.admin-complaint__sender {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.admin-complaint__title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.admin-complaint__sender-info {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.admin-complaint__body {
+  padding: 12px 16px;
+}
+
+.admin-complaint__content {
+  font-size: 13px;
+  color: var(--text-secondary);
+  font-style: italic;
+  padding: 10px 14px;
+  background: var(--warning-light);
+  border-radius: var(--radius-sm);
+  border: 1px solid #FDE68A;
+  border-left: 3px solid var(--warning);
+  margin-bottom: 12px;
+}
+
+.admin-complaint__actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .admin-nav {
+    width: 100%;
+  }
+  .admin-nav__item {
+    font-size: 12px;
+    padding: 8px 12px;
+  }
+}
+
+/* --- Thẻ phòng trọ trong Admin panel --- */
+.admin-room-card {
+  cursor: pointer;
+  transition: all var(--transition) !important;
+}
+
+.admin-room-card:hover {
+  border-color: var(--accent) !important;
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px var(--accent-glow) !important;
+}
+

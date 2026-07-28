@@ -1,0 +1,93 @@
+/* NotFoundPage.css */
+.notfound-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  font-family: var(--font);
+  padding: 24px;
+}
+
+.notfound-card {
+  text-align: center;
+  max-width: 480px;
+  animation: fadeIn 0.4s ease;
+}
+
+.notfound-code {
+  font-size: 120px;
+  font-weight: 900;
+  letter-spacing: -4px;
+  background: linear-gradient(135deg, var(--accent), #A855F7);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+  margin-bottom: -8px;
+}
+
+.notfound-emoji {
+  font-size: 64px;
+  margin-bottom: 20px;
+  display: block;
+  animation: fadeIn 0.4s ease 0.1s both;
+}
+
+.notfound-title {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+  letter-spacing: -0.5px;
+}
+
+.notfound-desc {
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: 36px;
+}
+
+.notfound-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.notfound-btn {
+  padding: 12px 28px;
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.notfound-btn--primary {
+  background: linear-gradient(135deg, var(--accent), #6366F1);
+  color: #fff;
+  border: none;
+  box-shadow: 0 4px 12px var(--accent-glow);
+}
+
+.notfound-btn--primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px var(--accent-glow);
+}
+
+.notfound-btn--secondary {
+  background: var(--surface);
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+}
+
+.notfound-btn--secondary:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}

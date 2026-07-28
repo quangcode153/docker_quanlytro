@@ -1,0 +1,8 @@
+/* ===========================================
+   Header.css — Styles riêng cho Thanh Điều Hướng
+   (Nếu component Header được tách ra thư mục riêng sau này)
+   =========================================== */
+
+/* Các class .header, .header__brand, v.v. đã được định nghĩa
+   trong index.css để dùng toàn cục. File này để mở rộng
+   thêm styles riêng nếu cần trong tương lai. */

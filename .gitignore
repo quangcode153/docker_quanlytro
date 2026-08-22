@@ -2,6 +2,11 @@
 *.exe
 ngrok.exe
 
+# Database dump & AI rules
+*.sql
+SQLBTL.sql
+.antigravityrules
+
 # Documentation / Scratch local logs
 docs/
 docskienthuc/

@@ -28,8 +28,7 @@ jobs:
     - name: Run Backend Unit Tests
       run: |
         cd backend
-        chmod +x mvnw
-        ./mvnw clean test
+        mvn clean test
 
   frontend-ci:
     name: 🧪 Frontend Build Verify (React + Vite)

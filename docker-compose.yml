@@ -18,6 +18,7 @@ services:
       retries: 5
 
   backend:
+    image: ${DOCKERHUB_USERNAME:-quangcode153}/nhatro-backend:latest
     build:
       context: ./backend
       dockerfile: Dockerfile
@@ -37,6 +38,7 @@ services:
         condition: service_healthy
 
   frontend:
+    image: ${DOCKERHUB_USERNAME:-quangcode153}/nhatro-frontend:latest
     build:
       context: ./frontend
       dockerfile: Dockerfile

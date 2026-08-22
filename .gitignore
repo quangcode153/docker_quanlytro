@@ -1,3 +1,13 @@
+# Executables & Binaries
+*.exe
+ngrok.exe
+
+# Documentation / Scratch local logs
+docs/
+docskienthuc/
+frontend/docs1/
+frontend/docs2/
+
 # Logs
 logs
 *.log
@@ -7,9 +17,11 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Node / Build outputs
 node_modules
 dist
 dist-ssr
+target/
 *.local
 
 # Environment variables (moi nguoi co .env rieng)

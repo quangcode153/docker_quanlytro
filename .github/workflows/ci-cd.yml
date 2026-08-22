@@ -7,8 +7,11 @@ on:
     branches: [ main, master ]
 
 jobs:
+  # ==========================================
+  # STAGE 1: TỰ ĐỘNG CHẠY TEST BACKEND & FRONTEND
+  # ==========================================
   backend-ci:
-    name: Backend CI (Spring Boot)
+    name: 🧪 Backend Unit Test (Spring Boot)
     runs-on: ubuntu-latest
 
     steps:
@@ -22,14 +25,14 @@ jobs:
         distribution: 'temurin'
         cache: maven
 
-    - name: Run Backend Tests
+    - name: Run Backend Unit Tests
       run: |
         cd backend
         chmod +x mvnw
         ./mvnw clean test
 
   frontend-ci:
-    name: Frontend CI (Vite + React)
+    name: 🧪 Frontend Build Verify (React + Vite)
     runs-on: ubuntu-latest
 
     steps:
@@ -49,23 +52,80 @@ jobs:
         npm ci
         npm run build
 
-  docker-build:
-    name: Docker Configuration Verify
-    runs-on: ubuntu-latest
+  # ==========================================
+  # STAGE 2: BUILD & PUSH DOCKER IMAGES LÊN DOCKER HUB
+  # (Chỉ chạy khi Test ở Stage 1 thành công 100%)
+  # ==========================================
+  build-and-push-docker:
+    name: 🐳 Build & Push Docker Images
     needs: [backend-ci, frontend-ci]
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
 
     steps:
     - name: Checkout Code
       uses: actions/checkout@v4
 
-    - name: Validate Docker Compose Config
-      run: |
-        docker compose config
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-    - name: Build Backend Docker Image
-      run: |
-        docker build -t test-backend ./backend
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
 
-    - name: Build Frontend Docker Image
-      run: |
-        docker build -t test-frontend ./frontend
+    - name: Build & Push Backend Docker Image
+      uses: docker/build-push-action@v5
+      with:
+        context: ./backend
+        file: ./backend/Dockerfile
+        push: true
+        tags: |
+          ${{ secrets.DOCKERHUB_USERNAME }}/nhatro-backend:latest
+          ${{ secrets.DOCKERHUB_USERNAME }}/nhatro-backend:${{ github.sha }}
+
+    - name: Build & Push Frontend Docker Image
+      uses: docker/build-push-action@v5
+      with:
+        context: ./frontend
+        file: ./frontend/Dockerfile
+        push: true
+        tags: |
+          ${{ secrets.DOCKERHUB_USERNAME }}/nhatro-frontend:latest
+          ${{ secrets.DOCKERHUB_USERNAME }}/nhatro-frontend:${{ github.sha }}
+
+  # ==========================================
+  # STAGE 3: GỬI LỆNH SSH SANG SERVER LINUX TỰ ĐỘNG DEPLOY
+  # ==========================================
+  deploy-to-linux:
+    name: 🚀 SSH Deploy to Linux Server
+    needs: build-and-push-docker
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Execute Remote SSH Commands
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USER }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        port: ${{ secrets.SSH_PORT || 22 }}
+        script: |
+          echo "=== 1. Chuyển vào thư mục dự án trên Server ==="
+          cd ${{ secrets.SERVER_WORK_DIR }}
+
+          echo "=== 2. Cập nhật docker-compose.yml và file cấu hình mới nhất ==="
+          git pull origin main
+
+          echo "=== 3. Pull Docker Image mới nhất vừa push lên Docker Hub ==="
+          docker compose pull
+
+          echo "=== 4. Khởi chạy dự án phiên bản mới nhất ==="
+          docker compose up -d --remove-orphans
+
+          echo "=== 5. Dọn dẹp Docker Image rác cũ ==="
+          docker image prune -f
+
+          echo "=== DEPLOY THÀNH CÔNG DỰ ÁN VERSION MỚI NHẤT! ==="

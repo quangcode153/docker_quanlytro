@@ -95,26 +95,33 @@ jobs:
           ${{ secrets.DOCKERHUB_USERNAME }}/nhatro-frontend:${{ github.sha }}
 
   # ==========================================
-  # STAGE 3: GỬI LỆNH SSH SANG SERVER LINUX TỰ ĐỘNG DEPLOY (TẠM NGHỈ)
-  # (Khi nào chuẩn bị xong SSH Key trên Server Linux, hãy đổi `if: false` thành `if: github.ref == ...`)
+  # STAGE 3: TỰ ĐỘNG DEPLOY TRÊN WSL (SELF-HOSTED RUNNER)
   # ==========================================
-  deploy-to-linux:
-    name: 🚀 SSH Deploy to Linux Server (Paused)
+  deploy-to-wsl:
+    name: 🚀 Auto Deploy on WSL (Self-Hosted Runner)
     needs: build-and-push-docker
-    if: false  # Tạm thời tắt bước SSH Deploy để chờ cấu hình Server Linux
-    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    runs-on: self-hosted
 
     steps:
-    - name: Execute Remote SSH Commands
-      uses: appleboy/ssh-action@v1.0.3
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v3
       with:
-        host: ${{ secrets.SSH_HOST }}
-        username: ${{ secrets.SSH_USER }}
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-        port: ${{ secrets.SSH_PORT || 22 }}
-        script: |
-          cd ${{ secrets.SERVER_WORK_DIR }}
-          git pull origin main
-          docker compose pull
-          docker compose up -d --remove-orphans
-          docker image prune -f
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+    - name: Pull Latest Docker Images
+      run: |
+        cd ~/docker-test || true
+        docker compose pull
+
+    - name: Deploy Containers with Docker Compose
+      run: |
+        cd ~/docker-test || true
+        docker compose up -d --remove-orphans
+        docker image prune -f
+
+
